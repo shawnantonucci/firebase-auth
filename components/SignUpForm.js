@@ -11,17 +11,28 @@ class SignUpForm extends Component {
     phone: ""
   };
 
-  handleSubmit = () => {
-    axios
-      .post(`${ROOT_URL}/createUser`, {
+  handleSubmit = async () => {
+    try {
+      await axios.post(`${ROOT_URL}/createUser`, { phone: this.state.phone });
+      await axios.post(`${ROOT_URL}/requestOneTimePassword`, {
         phone: this.state.phone
-      })
-      .then(() => {
-        axios.post(`${ROOT_URL}/requestOneTimePassword`, {
-          phone: this.state.phone
-        });
       });
+    } catch (err) {
+      this.setState({ error: "Something went wrong"})
+    }
   };
+
+  //   handleSubmit = () => {
+  //     axios
+  //       .post(`${ROOT_URL}/createUser`, {
+  //         phone: this.state.phone
+  //       })
+  //       .then(() => {
+  //         axios.post(`${ROOT_URL}/requestOneTimePassword`, {
+  //           phone: this.state.phone
+  //         });
+  //       });
+  //   };
 
   render() {
     return (
